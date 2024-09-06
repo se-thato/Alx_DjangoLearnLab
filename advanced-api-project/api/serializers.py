@@ -1,19 +1,13 @@
 from rest_framework import Serializers
 from .models import Author, book
 
-class AuthorSerializer(Serializers.ModelSerializer):
-    """
-    Serializer for the Author model with a field name.
-    """
+class AuthorSerializer(Serializers.ModelSerializer): #Serializer for the Author model with a field name.
     class Meta:
         model = Author
         fields = ["name"]
 
 
-class BookSerializer(Serializers.ModelSerializer):
-    """
-    Serializer for Book with the fields title, publication_year and author
-    """
+class BookSerializer(Serializers.ModelSerializer): #Serializer for Book with the fields title, publication_year and author
     class Meta:
         model = Book
         fields = ["title", "publication_year", "author"]
