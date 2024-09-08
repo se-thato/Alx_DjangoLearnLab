@@ -91,6 +91,12 @@ class BookTests(APITestCase):
         self.assertEqual(years, sorted(years, reverse=True))
 
     def test_permission_create(self):
+         self.client.login()
+        data = {
+            'title': 'The Ink BlackHeart',
+            'publication_year': 2024,
+            'author': self.author.id
+
         self.client.logout()  # Ensure user is not authenticated
         data = {
             'title': 'The Ink BlackHeart',
@@ -101,6 +107,12 @@ class BookTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)  # Authenticated users only
 
     def test_permission_update(self):
+         self.client.login() 
+        data = {
+            'title': 'The Ink BlackHeart',
+            'publication_year': 2024,
+            'author': self.author.id
+
         self.client.logout()  # make sure the user is not authenticate
         data = {
             'title': 'The Running Grave',
@@ -110,6 +122,10 @@ class BookTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)  # Authenticated users only
 
     def test_permission_delete(self):
+        self.client.login() 
+        response = self.client.delete(self.delete_url(self.book.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN) 
+
         self.client.logout()  # make sure the user is not authenticate
         response = self.client.delete(self.delete_url(self.book.id))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)  # Authenticated users only
