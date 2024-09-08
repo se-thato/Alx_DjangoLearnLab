@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status, filters
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import filters
-
+from django_filters import rest_framework
 
 class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
