@@ -6,15 +6,27 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.response import Response
 from django_filters import rest_framework
 
+
+
+
+class BookFilter(django_filters.FilterSet):
+    title = django_filters.CharFilter(lookup_expr='icontains')
+    author = django_filters.CharFilter(field_name='author__name', lookup_expr='icontains')
+    publication_year = django_filters.NumberFilter()
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_year']
+
 class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly] 
-    serializer_class = UserSerializer
-    filter_backends = DjangoFilterBackend
-    search_fields = ['title', 'author']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = BookFilter
-    OrderingFilter = ["title", "publication_year"]
+    search_fields = ['title', 'author__name']
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['-publication_year']
 
       def create(self, serializer):
         # Custom logic before saving
