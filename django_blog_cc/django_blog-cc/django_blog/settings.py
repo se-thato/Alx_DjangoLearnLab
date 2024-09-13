@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-=a!p#&h%p0+iif4aw)j!t-0%ak-@z#)pf)a0(5ujxv0b%34gqx"
+SECRET_KEY = "django-insecure-gjf^i0liz^y@-x9nmn(^+2xndc7n9xqzx#rluo*s7ay5_%=mtc"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,8 +40,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "django_blog.urls"
 
-STATIC_URL = '/static/'
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -67,7 +65,7 @@ WSGI_APPLICATION = "django_blog.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "mysql",
+        "NAME": "db.mysql",
         "USER": 'root',
         "PASSWORD": '@Theplanetisflat',
         "HOST": 'localhost',
@@ -111,6 +109,35 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+# static_url settings
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'blog/static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            BASE_DIR / 'blog' / 'templates',
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
