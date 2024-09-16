@@ -20,7 +20,7 @@ class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
     queryset=Tag.objects.all(),
     required=False,
-    widget=forms.CheckboxSelectMultiple
+    widgets=forms.CheckboxSelectMultiple
     )
     class Meta:
         model = Post
