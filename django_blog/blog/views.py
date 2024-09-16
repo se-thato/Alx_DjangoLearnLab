@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserProfileForm, PostForm
-from .models import UserProfile, Post
+from .models import UserProfile, Post, Tag
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -110,15 +110,15 @@ class CommentCreateView(LoginRequiredMixin, CreateView)
     template_name = 'comment.html'
     
     def form_valid(self, form):
-        # Setting the blog_post and author before saving
-        blog_post = get_object_or_404(BlogPost, pk=self.kwargs['pk'])
-        form.instance.blog_post = blog_post
+        # Setting the post and author before saving
+        post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        form.instance.post = post
         form.instance.author = self.request.user
         return super().form_valid(form)
     
     def get_success_url(self):
-        # Redirect to the blog post detail view after creating the comment
-        return reverse_lazy('blogpost_detail', args=[self.kwargs['pk']])
+        # Redirect to the post detail view after creating the comment
+        return reverse_lazy('post_detail', args=[self.kwargs['pk']])
 
 class CommentUpdateView(CommentUpdateView)
       model = Comment
@@ -132,7 +132,7 @@ class CommentUpdateView(CommentUpdateView)
         return comment
 
     def get_success_url(self):
-        return reverse('blogpost_detail', args=[self.object.blog_post.pk])
+        return reverse('post_detail', args=[self.object.post.pk])
 
 
 class CommentDeleteView(DeleteView):
@@ -146,4 +146,18 @@ class CommentDeleteView(DeleteView):
         return comment
 
     def get_success_url(self):
-        return reverse('blogpost_detail', args=[self.object.blog_post.pk])
+        return reverse('post_detail', args=[self.object.post.pk])
+
+
+    #adding a search view
+    def search_posts(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    else:
+        posts = Post.objects.none()
+    return render(request, 'searchbar.html', {'posts': posts, 'query': query})
