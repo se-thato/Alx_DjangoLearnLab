@@ -22,6 +22,7 @@ class PostForm(forms.ModelForm):
     required=False,
     widgets=forms.CheckboxSelectMultiple
     )
+    queryset= TagWidget()
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
