@@ -6,13 +6,13 @@ from rest_framework.authtoken.models import Token
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser  
+        model = CustomUser 
         fields = ('id', 'bio', 'profile', 'followers', 'username')
 
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = CustomUser 
         fields = ('id', 'bio', 'profile', 'username')
 
 class LoginSerializer(serializers.Serializer):
