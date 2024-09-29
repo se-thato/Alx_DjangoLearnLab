@@ -25,3 +25,6 @@ class Comment(models.Model):
 
 class Like(models.Model):
     pass
+
+
+
