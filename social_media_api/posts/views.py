@@ -95,7 +95,7 @@ def like_post(request, pk):
 
 @login_required
 def unlike_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = permissions.IsAuthenticated, generics.get_object_or_404(Post, pk=pk)
     try:
         like = Like.objects.get(user=request.user, post=post)
         like.delete()
